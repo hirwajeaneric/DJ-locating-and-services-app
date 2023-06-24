@@ -1,15 +1,15 @@
 const express = require('express');
-const router = express.Router();
+const scheduleRouter = express.Router();
 
 const { findById, add, edit, findByPropertyId, findByExpectedActivities, findByOwnerId, findByPostingTenantId, getAll } = require('../controllers/schedule.controllers');
 
-router.post('/add', add);
-router.get('/list', getAll);
-router.get('/findById', findById);
-router.get('/findByPropertyId', findByPropertyId);
-router.get('/findByExpectedActivities', findByExpectedActivities);
-router.get('/findByOwnerId', findByOwnerId);
-router.get('/findByPostingTenantId', findByPostingTenantId);
-router.put('/update', edit);
+scheduleRouter.post('/add', add);
+scheduleRouter.get('/list', getAll);
+scheduleRouter.get('/findById', findById);
+scheduleRouter.get('/findByPropertyId', findByPropertyId);
+scheduleRouter.get('/findByExpectedActivities', findByExpectedActivities);
+scheduleRouter.get('/findByOwnerId', findByOwnerId);
+scheduleRouter.get('/findByPostingTenantId', findByPostingTenantId);
+scheduleRouter.put('/update', edit);
 
-module.exports = router;
+module.exports = scheduleRouter;

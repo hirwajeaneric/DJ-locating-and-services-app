@@ -59,26 +59,6 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: 0, 
     },
-    abuseReports: [
-        { 
-            email: {
-                type: String, 
-                required: false
-            },
-            phone: {
-                type: String, 
-                required: false
-            },
-            fullName: {
-                type: String, 
-                required: false
-            },
-            description: {
-                type: String, 
-                required: false
-            }, 
-        }
-    ],
 }) 
 
 userSchema.pre('save', async function() {

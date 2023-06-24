@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
@@ -32,10 +32,12 @@ const signIn = async (req, res) => {
             email: user.email,
             fullName: user.fullName,
             phone: user.phone,
-            nationality: user.nationality,
-            nationalId: user.nationalId,
-            passportNumber: user.passportNumber,
-            profilePicturer: user.profilePicture,
+            userType: user.userType,
+            companyName: user.companyName,
+            specialities: user.specialities,
+            jobHistory: user.jobHistory,
+            profilePicture: user.profilePicture,
+            ratings: user.ratings,
             token: token,
         }
     })
@@ -64,10 +66,12 @@ const signUp = async (req, res) => {
             email: user.email,
             fullName: user.fullName,
             phone: user.phone,
-            nationality: user.nationality,
-            nationalId: user.nationalId,
-            passportNumber: user.passportNumber,
-            profilePicturer: user.profilePicture,
+            userType: user.userType,
+            companyName: user.companyName,
+            specialities: user.specialities,
+            jobHistory: user.jobHistory,
+            profilePicture: user.profilePicture,
+            ratings: user.ratings,
             token: token,
         }
     })
@@ -139,14 +143,16 @@ const updateUser = async(req, res, next) => {
     res.status(StatusCodes.OK).json({
         message: "Account successfully updated!",
         user: {
-            id: updatedUser._id,
-            email: updatedUser.email,
-            fullName: updatedUser.fullName,
-            phone: updatedUser.phone,
-            nationality: updatedUser.nationality,
-            nationalId: updatedUser.nationalId,
-            passportNumber: updatedUser.passportNumber,
-            profilePicturer: updatedUser.profilePicture,
+            id: user._id,
+            email: user.email,
+            fullName: user.fullName,
+            phone: user.phone,
+            userType: user.userType,
+            companyName: user.companyName,
+            specialities: user.specialities,
+            jobHistory: user.jobHistory,
+            profilePicture: user.profilePicture,
+            ratings: user.ratings,
             token: token,
         }
     })
@@ -168,11 +174,7 @@ const requestPasswordReset = async(req, res, next) => {
     await sendEmail(
         registeredUser.email,
         "Reset password",
-        {
-          payload: link,
-          name: registeredUser.fullName
-        },
-        "./template/requestResetPassword.handlebars"
+        link
     );
 
     res.status(StatusCodes.OK).json({ message: `Password reset link sent to your email: ${registeredUser.email}`})   

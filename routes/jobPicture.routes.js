@@ -1,18 +1,18 @@
 const express = require('express');
-const router = express.Router();
+const jobPictureRouter = express.Router();
 
 const { findById, getAll, add, attachFile, edit, findByLocation, findByMapCoordinates, findByOwnerId, findByPostId, findByStatus, remove, upload } = require('../controllers/jobPicture.controllers');
 
 
-router.post('/add', upload.array('pictures', 12), attachFile, add);
-router.get('/list', getAll);
-router.get('/findById', findById);
-router.put('/update', upload.array('pictures', 12), attachFile, edit);
-router.delete('/delete', remove);
-router.get('/findByLocation', findByLocation);
-router.get('/findByMapCoordinates', findByMapCoordinates);
-router.get('/findByOwnerId', findByOwnerId);
-router.get('/findByPostId', findByPostId);
-router.get('/findByStatus', findByStatus);
+jobPictureRouter.post('/add', upload.array('pictures', 12), attachFile, add);
+jobPictureRouter.get('/list', getAll);
+jobPictureRouter.get('/findById', findById);
+jobPictureRouter.put('/update', upload.array('pictures', 12), attachFile, edit);
+jobPictureRouter.delete('/delete', remove);
+jobPictureRouter.get('/findByLocation', findByLocation);
+jobPictureRouter.get('/findByMapCoordinates', findByMapCoordinates);
+jobPictureRouter.get('/findByOwnerId', findByOwnerId);
+jobPictureRouter.get('/findByPostId', findByPostId);
+jobPictureRouter.get('/findByStatus', findByStatus);
 
-module.exports = router;
+module.exports = jobPictureRouter;
