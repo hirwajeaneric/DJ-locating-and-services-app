@@ -1,7 +1,6 @@
 require('dotenv').config();
 require('express-async-errors');
 
-const xss = require('xss-clean');
 const cors = require('cors');
 const express = require('express');
 const app = express();
@@ -16,7 +15,7 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 app.use(express.json());
 app.use(cors());
 
-app.use('/api/v1/isma/', allRoutes);
+app.use('/api/v1/fdj/', allRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

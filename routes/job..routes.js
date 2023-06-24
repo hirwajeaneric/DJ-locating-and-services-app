@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { findById, add, remove, edit, findByOwnerId, findByStatus, findByTenantId, getAll } = require('../controllers/contract');
+const { findById, add, remove, edit, findByOwnerId, findByStatus, findByTenantId, getAll } = require('../controllers/job.controllers');
 
 router.post('/add', add);
 router.get('/list', getAll);

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { findById, add, edit, findByPropertyId, findByExpectedActivities, findByOwnerId, findByPostingTenantId, getAll } = require('../controllers/joinPost');
+const { findById, add, edit, findByPropertyId, findByExpectedActivities, findByOwnerId, findByPostingTenantId, getAll } = require('../controllers/schedule.controllers');
 
 router.post('/add', add);
 router.get('/list', getAll);
