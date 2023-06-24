@@ -2,28 +2,25 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     fullName: { 
         type: String, 
         trim: true, 
         required: [true, 'Full name must be provided'],
-        maxlength: 50,
         minlength: 3,
     },
     userType: { 
         type: String,
         required: false, 
         enum: {
-            values: ["Client","DJ","Manager"],
+            values: ["Personal","Company","DJ","Manager"],
             message: '{VALUE} is not supported as a user type.'
         }
     },
-    nationalId: { 
+    companyName: { 
         type: String, 
         trim: true, 
         required: false,
-        maxlength: 16,
-        minlength: 16, 
     },
     email: { 
         type: String, 
@@ -40,44 +37,14 @@ const UserSchema = new mongoose.Schema({
         maxlength: 12,
         minlength: 10,
     },
-    qualifications: [
-        { 
-            type: String, 
-            required: false
-        }
-    ],
-    jobHistory: [
-        { 
-            jobId: { 
-                type: String, 
-                required: false
-            },
-            location: { 
-                type: String, 
-                required: false
-            },
-            googleMapCoordinates: { 
-                type: String, 
-                required: false
-            },
-            jobType: { 
-                type: String, 
-                required: false
-            },
-            jobDescription: { 
-                type: String, 
-                required: false
-            },
-            startDate: { 
-                type: Date, 
-                required: false
-            },
-            endDate: { 
-                type: Date, 
-                required: false
-            } 
-        }
-    ],
+    specialities: {
+        type: Array,
+        required: false,
+    },
+    jobHistory: {
+        type: Array,
+        required: false,
+    },
     password: { 
         type: String, 
         required: [true, 'Password must be provided'], 
@@ -91,16 +58,36 @@ const UserSchema = new mongoose.Schema({
         type: Number, 
         required: true,
         default: 0, 
-    }
+    },
+    abuseReports: [
+        { 
+            email: {
+                type: String, 
+                required: false
+            },
+            phone: {
+                type: String, 
+                required: false
+            },
+            fullName: {
+                type: String, 
+                required: false
+            },
+            description: {
+                type: String, 
+                required: false
+            }, 
+        }
+    ],
 }) 
 
-UserSchema.pre('save', async function() {
+userSchema.pre('save', async function() {
     if (!this.isModified('password')) return;
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-UserSchema.methods.createJWT = function() {
+userSchema.methods.createJWT = function() {
     return jwt.sign(
         {
             userId: this._id,  
@@ -113,9 +100,9 @@ UserSchema.methods.createJWT = function() {
     );
 };
 
-UserSchema.methods.comparePassword = async function(candidatePassword) {
+userSchema.methods.comparePassword = async function(candidatePassword) {
     const isMatch = await bcrypt.compare(candidatePassword, this.password);
     return isMatch;
 }
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('user', userSchema);
