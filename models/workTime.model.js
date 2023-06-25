@@ -9,6 +9,6 @@ const workTimeSchema = new mongoose.Schema({
         type: Array,
         required: false,
     }
-}) 
+}); 
 
 module.exports = mongoose.model('work_time', workTimeSchema);

@@ -1,13 +1,12 @@
 const express = require('express');
 const workTimeRouter = express.Router();
 
-const { findById, getAll, add, edit, findByJoinPost, findByPropertyId, remove } = require('../controllers/workTime.controllers');
+const { findById, getAll, add, edit, findByTime, remove } = require('../controllers/workTime.controllers');
 
 workTimeRouter.post('/add', add);
 workTimeRouter.get('/list', getAll);
 workTimeRouter.get('/findById', findById);
-workTimeRouter.get('/findByJoinPost', findByJoinPost);
-workTimeRouter.get('/findByPropertyId', findByPropertyId);
+workTimeRouter.get('/findByTime', findByTime);
 workTimeRouter.put('/update', edit);
 workTimeRouter.delete('/delete', remove);
 

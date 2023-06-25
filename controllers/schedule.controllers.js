@@ -1,103 +1,43 @@
-const JoinPost = require('../models/joinPost');
-const Contract = require('../models/contract');
-const Property = require('../models/property');
+const ScheduleModel = require('../models/schedule.model');
 const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, NotFoundError } = require('../errors/index');
 
 const add = async (req, res) => {
-    const newJoinPost = req.body;
-    let acceptedToRepost = false;
-
-    const allContracts = await Contract.find({});
-
-    allContracts.forEach(contract => {
-        contract.tenants.forEach(tenant => {
-            if (tenant.tenantId === newJoinPost.postingTenantId || 
-                tenant.tenantName === newJoinPost.fullName || 
-                contract.propertyId === newJoinPost.propertyId && 
-                tenant.acceptedToRepost) {
-                    acceptedToRepost = true;
-                    return;
-            } else {
-                acceptedToRepost = false;
-            }
-        })
-    });
-
-    if (acceptedToRepost) {
-        const joinPost = await JoinPost.create(req.body);
-
-        // CHANGE PROPERTY STATUS
-        const updatedProperty = await Property.findByIdAndUpdate(joinPost.propertyId, { status: 'For Join' });
-        if (updatedProperty) {
-            res.status(StatusCodes.CREATED).json({ message: 'Created', payload: joinPost })
-        }
-    } else {
-        throw new BadRequestError(`Failed to post the house since sharing the rent price with other people was not part of the contract. If you want to change the contract terms, please contact your landlord ang ask for the permission to repost the house.`)
-    }
+    const newSchedule = req.body;
+    const Schedule = await ScheduleModel.create(req.body);
+    res.status(StatusCodes.CREATED).json({ message: 'Created', schedule: Schedule });
 };
 
 const getAll = async(req, res) => {
-    const joinPosts = await JoinPost.find({})
-    res.status(StatusCodes.OK).json({ nbHits: joinPosts.length, joinPosts })
+    const schedules = await ScheduleModel.find({})
+    res.status(StatusCodes.OK).json({ nbHits: schedules.length, schedules })
 };
 
 const findById = async(req, res) => {
-    const joinPostId = req.query.id;
-    const joinPost = await JoinPost.findById(joinPostId);
-    if (!joinPost) {
-        throw new BadRequestError(`Join post not found!`);
+    const ScheduleId = req.query.id;
+    const Schedule = await ScheduleModel.findById(ScheduleId);
+    if (!Schedule) {
+        throw new BadRequestError(`Schedule not found!`);
     }
-    res.status(StatusCodes.OK).json({ joinPost });
+    res.status(StatusCodes.OK).json({ Schedule });
 };
 
-const findByPropertyId = async(req, res) => {
-    const propertyId = req.query.propertyId;
-    const joinPost = await JoinPost.findOne({ propertyId: propertyId });
-    res.status(StatusCodes.OK).json({ joinPost });
-};
-
-const findByExpectedActivities = async(req, res) => {
-    const expectedActivity = req.query.expectedActivity;
-    const posts = await JoinPost.find({});
-    let joinPosts = [];
-
-    posts.forEach(post => {
-        post.expectedActivities.forEach(activity => {
-            if (activity === expectedActivity) {
-                joinPosts.push(post);
-            }
-        })        
-    })
-
-    res.status(StatusCodes.OK).json({ joinPosts });
-};
-
-const findByOwnerId = async(req, res) => {
-    const ownerId = req.query.ownerId;
-    const joinPosts = await JoinPost.find({ ownerId: ownerId });
-    res.status(StatusCodes.OK).json({ joinPosts });
-};
-
-const findByPostingTenantId = async(req, res) => {
-    const postingTenantId = req.query.postingTenantId;
-    const joinPosts = await JoinPost.find({postingTenantId: postingTenantId});
-    if (!joinPosts) {
-        throw new BadRequestError(`No join posts found`);
-    }
-    res.status(StatusCodes.OK).json({ joinPosts });
+const findByStartDay = async(req, res) => {
+    const startDay = req.query.startDay;
+    const Schedule = await ScheduleModel.findOne({ startDay: startDay });
+    res.status(StatusCodes.OK).json({ Schedule });
 };
 
 const edit = async(req, res) => {
-    const joinPostId = req.query.id;
+    const ScheduleId = req.query.id;
     
-    const joinPost = await JoinPost.findByIdAndUpdate({ _id: joinPostId}, req.body);
-    const updatedJoinPost = await JoinPost.findById(joinPost._id);
-    if (!updatedJoinPost) {
-        throw new NotFoundError(`JoinPost with id ${joinPostId} not found!`);
+    const Schedule = await Schedule.findByIdAndUpdate({ _id: ScheduleId}, req.body);
+    const updatedSchedule = await ScheduleModel.findById(Schedule._id);
+    if (!updatedSchedule) {
+        throw new NotFoundError(`Schedule with id ${ScheduleId} not found!`);
     }
 
-    res.status(StatusCodes.OK).json({ message: 'Post updated', payload: updatedJoinPost})
+    res.status(StatusCodes.OK).json({ message: 'Schedule updated!', payload: updatedSchedule})
 };
 
-module.exports = { add, getAll, edit, findByOwnerId, findByExpectedActivities, findByPropertyId, findByPostingTenantId , findByOwnerId, findById }
+module.exports = { add, getAll, edit, findById, findByStartDay }
