@@ -1,16 +1,13 @@
-const PropertyModel = require('../models/property');
+const JobPictureModel = require('../models/jobPictures.model');
 const { StatusCodes } = require('http-status-codes');
 const { BadRequestError } = require('../errors/index');
-const sendEmail = require('../utils/email/sendEmail');
 const multer= require('multer');
 
-// Establishing a multer storage
 const multerStorage = multer.diskStorage({
-    destination: (req, file, callback) => { callback(null, './properties') },
-    filename: (req, file, callback) => { callback(null, `property-${file.originalname}`) }
+    destination: (req, file, callback) => { callback(null, './pictures') },
+    filename: (req, file, callback) => { callback(null, `picture-${file.originalname}`) }
 })
 
-// Filter files with multer
 const multerFilter = (req, file, callback) => {
     if (file.mimetype.startsWith("image")) {
         callback(null, true);
@@ -24,122 +21,63 @@ const upload = multer({
     fileFilter: multerFilter 
 });
 
-// Middleware for attaching files to the request body before saving.
 const attachFile = async (req, res, next) => {
-    var pics = [];
-    const {query, body, files} = req;
+    const { file, ...others } = req;
 
-    // Check if there is an  property or house already
-    if (query.id) {
-        const  existingProperty = await PropertyModel.findById(query.id);
-        
-        if ( existingProperty &&  existingProperty.pictures.length !== 0) {
-            pics =  existingProperty.pictures;
-            if (files.length !== 0) {
-                pics =  existingProperty.pictures;
-                files.forEach(file => {
-                    pics.push(file.filename); 
-                });
-            }
-        } else if ( existingProperty &&  existingProperty.pictures.length === 0) {
-            if (files.length !== 0) {
-                pics =  existingProperty.pictures;
-                files.forEach(file => {
-                    pics.push(file.filename); 
-                });
-            }
-        } else if (!existingProperty) {
-            throw new BadRequestError(`Not found!`);
-        }
-    } else {
-        if (files.length !== 0) {
-            files.forEach(file => {
-                pics.push(file.filename); 
-            });       
-        }
-    }
-
-    req.body.pictures = pics;
+    req.body.picture = file;
     next();
 }
 
 const add = async (req, res) => {
-    const data = req.body;
-    const  property = await PropertyModel.create(req.body);
-    res.status(StatusCodes.CREATED).json({ message: 'Successfully added', property })
+    const  JobPicture = await JobPictureModel.create(req.body);
+    res.status(StatusCodes.CREATED).json({ message: 'Picture added', JobPicture })
 };
 
 const getAll = async(req, res) => {
-    const  properties = await PropertyModel.find({})
-    res.status(StatusCodes.OK).json({ nbHits:  properties.length,  properties })
+    const jobPictures = await JobPictureModel.find({})
+    res.status(StatusCodes.OK).json({ nbHits:  jobPictures.length,  jobPictures })
 };
 
 const findById = async(req, res) => {
-    const  propertyId = req.query.id;
-    const  property = await PropertyModel.findById( propertyId);
-    if(!property){
-        throw new BadRequestError(`Property not found!`)
+    const  JobPictureId = req.query.id;
+    const  JobPicture = await JobPictureModel.findById( JobPictureId);
+    if(!JobPicture){
+        throw new BadRequestError(`JobPicture not found!`)
     }
-    res.status(StatusCodes.OK).json({ property })
+    res.status(StatusCodes.OK).json({ JobPicture })
 };
 
-const findByOwnerId = async(req, res) => {
-    const ownerId = req.query.ownerId;
-    const properties = await PropertyModel.find({ ownerId: ownerId });
-    res.status(StatusCodes.OK).json({ nbHits:  properties.length,  properties });
+const findByJobId = async(req, res) => {
+    const jobId = req.query.jobId;
+    const jobPictures = await JobPictureModel.find({ jobId: jobId });
+    res.status(StatusCodes.OK).json({ nbHits:  jobPictures.length,  jobPictures });
 };
 
-const findByLocation = async(req, res) => {
-    const location = req.query.location;
-    let  properties = [];
-    const allProperties = await PropertyModel.find({});
-
-    allProperties.forEach(property => {
-        if ( property.location === location ||  property.location.includes(location)) {
-            properties.push(property);
-        }
-    })
-
-    res.status(StatusCodes.OK).json({ nbHits: properties.length, properties });
-};
-
-const findByMapCoordinates = async(req, res) => {
-    const mapCoordinates = req.query.mapCoordinates;
-    const properties = await PropertyModel.find({ mapCoordinates: mapCoordinates });
-    res.status(StatusCodes.OK).json({ nbHits:  properties.length,  properties });
-};
-
-const findByStatus = async(req, res) => {
-    const status = req.query.status;
-    const properties = await PropertyModel.find({ status: status });
-    res.status(StatusCodes.OK).json({ nbHits: properties.length, properties });
-};
-
-const findByPostId = async(req, res) => {
-    const postId = req.query.postId;
-    const  properties = await PropertyModel.find({ postId: postId });
-    res.status(StatusCodes.OK).json({ nbHits:  properties.length,  properties });
+const findByDjId = async(req, res) => {
+    const djId = req.query.djId;
+    const pictures = await JobPictureModel.find({ djId: djId });
+    res.status(StatusCodes.OK).json({ nbHits: pictures.length, pictures });
 };
 
 const edit = async(req, res) => {
-    const  property = req.body;
-    const  propertyId = req.query.id;
+    const  JobPicture = req.body;
+    const  JobPictureId = req.query.id;
     
-    const updated = await PropertyModel.findByIdAndUpdate({ _id:  propertyId }, property);
-    const updatedProperty = await PropertyModel.findById(updated._id);
+    const updated = await JobPictureModel.findByIdAndUpdate({ _id:  JobPictureId }, JobPicture);
+    const updatedJobPicture = await JobPictureModel.findById(updated._id);
 
-    res.status(StatusCodes.OK).json({ message: 'Updated', property: updatedProperty })
+    res.status(StatusCodes.OK).json({ message: 'Updated', JobPicture: updatedJobPicture })
 };
 
 const remove = async(req, res) => {
-    const propertyId = req.query.id;
-    const deletedProperty = await PropertyModel.findByIdAndRemove({ _id: propertyId});
+    const jobPictureId = req.query.id;
+    const deletedJobPicture = await JobPictureModel.findByIdAndRemove({ _id: jobPictureId});
 
-    if (!deletedProperty) {
-        throw new NotFoundError(`Property with id ${propertyId} not found!`);
+    if (!deletedJobPicture) {
+        throw new NotFoundError(`JobPicture with id ${jobPictureId} not found!`);
     }
 
     res.status(StatusCodes.OK).json({ message: 'Deleted'})
 };
 
-module.exports = { add, getAll, findById, findByStatus, findByLocation, findByOwnerId, findByMapCoordinates, findByPostId, edit, upload, attachFile, remove }
+module.exports = { add, getAll, findById, findByDjId, findByJobId, edit, upload, attachFile, remove }
