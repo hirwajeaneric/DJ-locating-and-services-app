@@ -22,9 +22,7 @@ const upload = multer({
 });
 
 const attachFile = async (req, res, next) => {
-    const { file, ...others } = req;
-
-    req.body.picture = file;
+    req.body.picture = req.file.filename;
     next();
 }
 

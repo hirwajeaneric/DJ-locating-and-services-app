@@ -19,7 +19,7 @@ const jobPictureSchema = new mongoose.Schema({
     },
     jobId: { 
         type: String,
-        required: true, 
+        required: false, 
     },
     uploadDate: { 
         type: Date, 

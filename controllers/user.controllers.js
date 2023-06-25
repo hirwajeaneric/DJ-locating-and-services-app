@@ -105,6 +105,17 @@ const findByEmail = async(req, res, next) => {
     res.status(200).json({ users });
 };
 
+const findByUserType = async(req, res, next) => {
+    const userType = req.query.userType;
+    const users = await User.findOne({ userType: userType })
+    
+    if (!users || users.length === 0 ) {
+        throw new NotFoundError(`No user with type ${userType}`);
+    }
+    
+    res.status(200).json({ users });
+};
+
 // Establishing a multer storage
 const multerStorage = multer.diskStorage({
     destination: (req, file, callback) => { callback(null, './profiles') },
@@ -143,16 +154,16 @@ const updateUser = async(req, res, next) => {
     res.status(StatusCodes.OK).json({
         message: "Account successfully updated!",
         user: {
-            id: user._id,
-            email: user.email,
-            fullName: user.fullName,
-            phone: user.phone,
-            userType: user.userType,
-            companyName: user.companyName,
-            specialities: user.specialities,
-            jobHistory: user.jobHistory,
-            profilePicture: user.profilePicture,
-            ratings: user.ratings,
+            id: updatedUser._id,
+            email: updatedUser.email,
+            fullName: updatedUser.fullName,
+            phone: updatedUser.phone,
+            userType: updatedUser.userType,
+            companyName: updatedUser.companyName,
+            specialities: updatedUser.specialities,
+            jobHistory: updatedUser.jobHistory,
+            profilePicture: updatedUser.profilePicture,
+            ratings: updatedUser.ratings,
             token: token,
         }
     })
@@ -222,4 +233,4 @@ const deleteAccount = async(req, res, next) => {
     res.status(StatusCodes.OK).json({ message: "Account deleted!" });
 };
 
-module.exports = { signIn, signUp, requestPasswordReset, findByEmail, resetPassword, getUsers, findById, updateUser, upload, deleteAccount, attachFile }
+module.exports = { signIn, signUp, requestPasswordReset, findByEmail, findByUserType, resetPassword, getUsers, findById, updateUser, upload, deleteAccount, attachFile }

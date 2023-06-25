@@ -7,11 +7,12 @@ const jobSchema = new mongoose.Schema({
     },
     price: { 
         type: Number, 
-        required: true, 
+        required: true,
+        default: 40000 
     },
     jobType: { 
         type: String,
-        required: true, 
+        required: [true, "Job type must be provided"], 
         enum: {
             values: ["Event Management","MC","Birth Day party","Wedding","Private party","Meeting","Other"],
             message: '{VALUE} is not supported as a job type.'
@@ -19,7 +20,7 @@ const jobSchema = new mongoose.Schema({
     },
     jobLocation: {
         type: String, 
-        required: true,
+        required: [true, "Location of the job is required"],
     },
     jobGoogleMapLocation: {
         type: String, 
@@ -27,15 +28,15 @@ const jobSchema = new mongoose.Schema({
     },
     startDate: {
         type: Date, 
-        required: true,
+        required: [true, "You must provide the start date of the job."],
     },
     endDate: {
         type: Date,
-        required: true
+        required: [true, "You must provide the end date of the job."]
     },
     numberOfHours: {
         type: Number,
-        required: true
+        required: [true, "You must provide the number of hours for the job."]
     },
     suggestedDjId: {
         type: String, 
@@ -51,7 +52,7 @@ const jobSchema = new mongoose.Schema({
     },
     requestingUserType: { 
         type: String, 
-        required: true,
+        required: [true, "User type is required"],
         enum: {
             values: ["Company","Personal","Group","Family"],
             message: '{VALUE} is not supported as a status.'
@@ -63,15 +64,17 @@ const jobSchema = new mongoose.Schema({
     },
     requestingUserName: { 
         type: String, 
-        required: true 
+        required: [true, "Your full name is required"] 
     },
     requestingUserPhone: { 
         type: String, 
-        required: true 
+        required: [true, "Your phone number is required"],
+        maxlength: 12,
+        minlength: 10 
     },
     requestingUserEmail: { 
         type: String, 
-        required: true 
+        required: [true, "Your email address is required"], 
     },
     paymentInstallments: [
         {
@@ -90,6 +93,7 @@ const jobSchema = new mongoose.Schema({
     status: { 
         type: String, 
         required: true,
+        default: "Pending",
         enum: {
             values: ["Pending","Confirmed","Rejected"],
             message: '{VALUE} is not supported as a status.'

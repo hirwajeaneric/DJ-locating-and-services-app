@@ -3,7 +3,6 @@ const router = express.Router();
 
 const user = require('./user.routes');
 const job = require('./job.routes');
-const schedule = require('./schedule.routes');
 const workTime = require('./workTimes.routes');
 const email = require('./email.routes');
 const jobPictures = require('./jobPicture.routes');
@@ -14,7 +13,6 @@ router.use('/pictures', express.static('./pictures'));
 router.use('/email', email);
 router.use('/user', user);
 router.use('/job', job);
-router.use('/schedule', schedule);
 router.use('/workTime', workTime);
 router.use('/email', email);
 router.use('/jobPictures', jobPictures);
