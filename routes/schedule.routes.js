@@ -1,7 +1,7 @@
 const express = require('express');
 const scheduleRouter = express.Router();
 
-const { findById, add, edit, findByStartDay, findById, getAll } = require('../controllers/schedule.controllers');
+const { findById, add, edit, findByStartDay, getAll } = require('../controllers/schedule.controllers');
 
 scheduleRouter.post('/add', add);
 scheduleRouter.get('/list', getAll);
