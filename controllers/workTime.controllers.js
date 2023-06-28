@@ -4,7 +4,6 @@ const { BadRequestError, NotFoundError } = require('../errors/index');
 
 const add = async (req, res) => {
     const workTime = await WorkTimeModel.create(req.body);
-
     res.status(StatusCodes.CREATED).json({ message: 'Added', workTime })
 };
 
