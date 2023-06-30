@@ -3,7 +3,6 @@ const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, NotFoundError } = require('../errors/index');
 
 const add = async (req, res) => {
-    console.log(req.body);
     const job = await JobModel.create(req.body);
     res.status(StatusCodes.CREATED).json({ message: 'Booking Created', job })
 };
