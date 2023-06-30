@@ -69,7 +69,7 @@ const jobSchema = new mongoose.Schema({
     requestingUserPhone: { 
         type: String, 
         required: [true, "Your phone number is required"],
-        maxlength: 12,
+        maxlength: 13,
         minlength: 10 
     },
     requestingUserEmail: { 
