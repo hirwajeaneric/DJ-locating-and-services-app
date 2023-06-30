@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
@@ -32,10 +32,12 @@ const signIn = async (req, res) => {
             email: user.email,
             fullName: user.fullName,
             phone: user.phone,
-            nationality: user.nationality,
-            nationalId: user.nationalId,
-            passportNumber: user.passportNumber,
-            profilePicturer: user.profilePicture,
+            userType: user.userType,
+            companyName: user.companyName,
+            specialities: user.specialities,
+            jobHistory: user.jobHistory,
+            profilePicture: user.profilePicture,
+            ratings: user.ratings,
             token: token,
         }
     })
@@ -64,10 +66,12 @@ const signUp = async (req, res) => {
             email: user.email,
             fullName: user.fullName,
             phone: user.phone,
-            nationality: user.nationality,
-            nationalId: user.nationalId,
-            passportNumber: user.passportNumber,
-            profilePicturer: user.profilePicture,
+            userType: user.userType,
+            companyName: user.companyName,
+            specialities: user.specialities,
+            jobHistory: user.jobHistory,
+            profilePicture: user.profilePicture,
+            ratings: user.ratings,
             token: token,
         }
     })
@@ -96,6 +100,17 @@ const findByEmail = async(req, res, next) => {
     
     if (!users || users.length === 0 ) {
         throw new NotFoundError(`No user with email ${userEmail}`);
+    }
+    
+    res.status(200).json({ users });
+};
+
+const findByUserType = async(req, res, next) => {
+    const userType = req.query.userType;
+    const users = await User.findOne({ userType: userType })
+    
+    if (!users || users.length === 0 ) {
+        throw new NotFoundError(`No user with type ${userType}`);
     }
     
     res.status(200).json({ users });
@@ -143,10 +158,12 @@ const updateUser = async(req, res, next) => {
             email: updatedUser.email,
             fullName: updatedUser.fullName,
             phone: updatedUser.phone,
-            nationality: updatedUser.nationality,
-            nationalId: updatedUser.nationalId,
-            passportNumber: updatedUser.passportNumber,
-            profilePicturer: updatedUser.profilePicture,
+            userType: updatedUser.userType,
+            companyName: updatedUser.companyName,
+            specialities: updatedUser.specialities,
+            jobHistory: updatedUser.jobHistory,
+            profilePicture: updatedUser.profilePicture,
+            ratings: updatedUser.ratings,
             token: token,
         }
     })
@@ -168,11 +185,7 @@ const requestPasswordReset = async(req, res, next) => {
     await sendEmail(
         registeredUser.email,
         "Reset password",
-        {
-          payload: link,
-          name: registeredUser.fullName
-        },
-        "./template/requestResetPassword.handlebars"
+        link
     );
 
     res.status(StatusCodes.OK).json({ message: `Password reset link sent to your email: ${registeredUser.email}`})   
@@ -220,4 +233,4 @@ const deleteAccount = async(req, res, next) => {
     res.status(StatusCodes.OK).json({ message: "Account deleted!" });
 };
 
-module.exports = { signIn, signUp, requestPasswordReset, findByEmail, resetPassword, getUsers, findById, updateUser, upload, deleteAccount, attachFile }
+module.exports = { signIn, signUp, requestPasswordReset, findByEmail, findByUserType, resetPassword, getUsers, findById, updateUser, upload, deleteAccount, attachFile }

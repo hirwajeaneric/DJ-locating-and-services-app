@@ -7,109 +7,90 @@ const jobSchema = new mongoose.Schema({
     },
     price: { 
         type: Number, 
-        required: [true, 'Rent price must be provided'] 
+        required: true,
+        default: 40000 
     },
     jobType: { 
         type: String,
-        required: false, 
+        required: [true, "Job type must be provided"], 
         enum: {
-            values: ["Event Management","MC","Birth Day party","Wedding","Private party","Meeting"],
+            values: ["Event Management","MC","Birth Day party sound system","Wedding sound system","Private party sound system","Meeting sound system","Other"],
             message: '{VALUE} is not supported as a job type.'
         }
     },
-    bedRooms: {
-        type: Number, 
+    jobLocation: {
+        type: String, 
+        required: [true, "Location of the job is required"],
+    },
+    jobGoogleMapLocation: {
+        type: String, 
+        required: false
+    },
+    startDate: {
+        type: Date, 
+        required: [true, "You must provide the start date of the job."],
+    },
+    endDate: {
+        type: Date,
+        required: [true, "You must provide the end date of the job."]
+    },
+    suggestedDjId: {
+        type: String,   
         required: false,
     },
-    bathRooms: {
-        type: Number, 
-        required: false,
-    },
-    furnished: {
-        type: Boolean,
-        required: false, 
-        default: false
-    },
-    dimensions: {
+    suggestedDjName: {
         type: String, 
         required: false,
     },
-    ownerId: { 
+    requestingUserName: { 
         type: String, 
         required: true 
     },
-    ownerName: { 
+    requestingUserId: { 
         type: String, 
         required: true 
     },
-    ownerPhone: { 
+    requestingUserType: { 
         type: String, 
-        required: true 
-    },
-    tenants: [
-        {
-            id: { 
-                type: String, 
-                required: false 
-            },
-            fullName: { 
-                type: String, 
-                required: false 
-            },
-            email: {
-                type: String, 
-                required: false
-            }
-        }
-    ],
-    location: { 
-        type: String, 
-        required: [true, 'Location must be provided']
-    },
-    mapCoordinates: { 
-        type: String, 
-        required: true, 
-    },
-    pictures: [
-        { 
-            type: String, 
-            required: false
-        }
-    ],
-    status: { 
-        type: String, 
-        required: true,
+        required: [true, "User type is required"],
         enum: {
-            values: ["For Rent","Occupied","For Join","For Sale"],
+            values: ["Company","Personal","Group","Family"],
             message: '{VALUE} is not supported as a status.'
         }
     },
-    rating: { 
-        type: Number, 
-        default: 0,
-        required: true
+    requestingCompanyName: { 
+        type: String, 
+        required: false 
     },
-    abuseReports: [
-        { 
-            email: {
-                type: String, 
-                required: false
-            },
-            phone: {
-                type: String, 
-                required: false
-            },
-            fullName: {
-                type: String, 
-                required: false
-            },
-            description: {
-                type: String, 
-                required: false
-            }, 
+    requestingUserName: { 
+        type: String, 
+        required: [true, "Your full name is required"] 
+    },
+    requestingUserPhone: { 
+        type: String, 
+        required: [true, "Your phone number is required"],
+        maxlength: 13,
+        minlength: 10 
+    },
+    requestingUserEmail: { 
+        type: String, 
+        required: [true, "Your email address is required"], 
+    },
+    paymentInstallment: {
+        type: Number,
+        required: true,
+        default: 40000,
+    },
+    status: { 
+        type: String, 
+        required: true,
+        default: "Pending",
+        enum: {
+            values: ["Pending","Confirmed","Rejected"],
+            message: '{VALUE} is not supported as a status.'
         }
-    ],
-    lastUpdated: { 
+    },
+    sendDate: { 
         type: Date, 
         required: true,
         default: Date.now() 

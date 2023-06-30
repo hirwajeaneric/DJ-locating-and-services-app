@@ -1,23 +1,20 @@
 const express = require('express');
 const router = express.Router();
 
-const user = require('./user');
-const contract = require('./contract');
-const property = require('./property');
-const joinPost = require('./joinPost');
-const rentRequest = require('./rentRequest');
-const joinRequest = require('./joinRequest');
-const emailRoutes = require('./email');
+const user = require('./user.routes');
+const job = require('./job.routes');
+const workTime = require('./workTimes.routes');
+const email = require('./email.routes');
+const jobPictures = require('./jobPicture.routes');
 
 router.use('/profile', express.static('./profiles'));
-router.use('/property', express.static('./properties'));
+router.use('/pictures', express.static('./pictures'));
 
-router.use('/email', emailRoutes);
+router.use('/email', email);
 router.use('/user', user);
-router.use('/contract', contract);
-router.use('/property', property);
-router.use('/joinPost', joinPost);
-router.use('/joinRequest', joinRequest);
-router.use('/rentRequest', rentRequest);
+router.use('/job', job);
+router.use('/workTime', workTime);
+router.use('/email', email);
+router.use('/jobPictures', jobPictures);
 
 module.exports = router;
