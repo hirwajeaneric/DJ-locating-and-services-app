@@ -34,17 +34,17 @@ const jobSchema = new mongoose.Schema({
         type: Date,
         required: [true, "You must provide the end date of the job."]
     },
-    numberOfHours: {
-        type: Number,
-        required: [true, "You must provide the number of hours for the job."]
-    },
     suggestedDjId: {
-        type: String, 
+        type: String,   
         required: false,
     },
     suggestedDjName: {
         type: String, 
         required: false,
+    },
+    requestingUserName: { 
+        type: String, 
+        required: true 
     },
     requestingUserId: { 
         type: String, 
@@ -76,20 +76,11 @@ const jobSchema = new mongoose.Schema({
         type: String, 
         required: [true, "Your email address is required"], 
     },
-    paymentInstallments: [
-        {
-            first: { 
-                type: Number, 
-                required: true,
-                default: 0, 
-            },
-            second: { 
-                type: Number, 
-                required: true,
-                default: 0, 
-            },
-        }
-    ],
+    paymentInstallment: {
+        type: Number,
+        required: true,
+        default: 40000,
+    },
     status: { 
         type: String, 
         required: true,

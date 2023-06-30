@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "This is a REAL_ESTATE_SHARING_SYSTEM. It is a backend application that will manage any application of this type that I will create.",
+  "description": "Fusee is a web based application that helps users track their favorite DJs, where they are going to be working, and on top of that, allow users to book some services provided by DJs.",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
@@ -9,11 +9,10 @@
   },
   "keywords": [
     "MERN",
-    "REAL_ESTATE_SHARING_SYSTEM",
-    "Office Space Sharing",
-    "Appartment Sharing for Students",
+    "BEST DJ LOCATION",
+    "Fusee",
+    "Booking for dj services",
     "React.js",
-    "MongoDB",
     "NodeJS",
     "Express.js"
   ],
