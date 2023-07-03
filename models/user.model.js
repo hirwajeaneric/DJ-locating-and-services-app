@@ -9,15 +9,26 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Full name must be provided'],
         minlength: 3,
     },
+    alias: { 
+        type: String, 
+        trim: true,
+        required: false, 
+        minlength: 3,
+    },
     userType: { 
         type: String,
         required: false, 
         enum: {
-            values: ["Personal","Company","DJ","Manager"],
+            values: ["Personal","Company","DJ","Manager","Admin"],
             message: '{VALUE} is not supported as a user type.'
         }
     },
     companyName: { 
+        type: String, 
+        trim: true, 
+        required: false,
+    },
+    companyDescription: { 
         type: String, 
         trim: true, 
         required: false,
@@ -49,6 +60,10 @@ const userSchema = new mongoose.Schema({
         type: String, 
         required: [true, 'Password must be provided'], 
         minlength: 8, 
+    },
+    description: { 
+        type: String, 
+        required: false, 
     },
     profilePicture: { 
         type: String, 
