@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema({
         trim: true, 
         required: false,
     },
+    companyDescription: { 
+        type: String, 
+        trim: true, 
+        required: false,
+    },
     email: { 
         type: String, 
         trim: true, 
