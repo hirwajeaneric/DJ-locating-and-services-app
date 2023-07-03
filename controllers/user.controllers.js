@@ -31,6 +31,7 @@ const signIn = async (req, res) => {
             id: user._id,
             email: user.email,
             fullName: user.fullName,
+            alias: user.alias,
             phone: user.phone,
             userType: user.userType,
             companyName: user.companyName,
@@ -38,6 +39,7 @@ const signIn = async (req, res) => {
             jobHistory: user.jobHistory,
             profilePicture: user.profilePicture,
             ratings: user.ratings,
+            description: user.description,
             token: token,
         }
     })
@@ -65,6 +67,7 @@ const signUp = async (req, res) => {
             id: user._id,
             email: user.email,
             fullName: user.fullName,
+            alias: user.alias,
             phone: user.phone,
             userType: user.userType,
             companyName: user.companyName,
@@ -72,6 +75,7 @@ const signUp = async (req, res) => {
             jobHistory: user.jobHistory,
             profilePicture: user.profilePicture,
             ratings: user.ratings,
+            description: user.description,
             token: token,
         }
     })
@@ -154,16 +158,18 @@ const updateUser = async(req, res, next) => {
     res.status(StatusCodes.OK).json({
         message: "Account successfully updated!",
         user: {
-            id: updatedUser._id,
-            email: updatedUser.email,
-            fullName: updatedUser.fullName,
-            phone: updatedUser.phone,
-            userType: updatedUser.userType,
-            companyName: updatedUser.companyName,
-            specialities: updatedUser.specialities,
-            jobHistory: updatedUser.jobHistory,
-            profilePicture: updatedUser.profilePicture,
-            ratings: updatedUser.ratings,
+            id: user._id,
+            email: user.email,
+            fullName: user.fullName,
+            alias: user.alias,
+            phone: user.phone,
+            userType: user.userType,
+            companyName: user.companyName,
+            specialities: user.specialities,
+            jobHistory: user.jobHistory,
+            profilePicture: user.profilePicture,
+            ratings: user.ratings,
+            description: user.description,
             token: token,
         }
     })

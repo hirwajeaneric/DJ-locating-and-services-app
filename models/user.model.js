@@ -9,6 +9,12 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Full name must be provided'],
         minlength: 3,
     },
+    alias: { 
+        type: String, 
+        trim: true,
+        required: false, 
+        minlength: 3,
+    },
     userType: { 
         type: String,
         required: false, 
@@ -49,6 +55,10 @@ const userSchema = new mongoose.Schema({
         type: String, 
         required: [true, 'Password must be provided'], 
         minlength: 8, 
+    },
+    description: { 
+        type: String, 
+        required: false, 
     },
     profilePicture: { 
         type: String, 
