@@ -42,7 +42,7 @@ node_modules/
 jspm_packages/
 
 # Backend images
-properties/
+pictures/
 profiles/
 
 # TypeScript v1 declaration files
