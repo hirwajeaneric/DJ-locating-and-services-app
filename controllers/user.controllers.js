@@ -156,7 +156,7 @@ const updateUser = async(req, res, next) => {
 
     const token = user.createJWT();
     res.status(StatusCodes.OK).json({
-        message: "Account successfully updated!",
+        message: "Account updated!",
         user: {
             id: user._id,
             email: user.email,

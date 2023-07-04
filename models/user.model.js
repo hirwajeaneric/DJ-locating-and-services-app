@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
         minlength: 10,
     },
     specialities: {
-        type: Array,
+        type: String,
         required: false,
     },
     jobHistory: {
