@@ -74,12 +74,25 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: 0, 
     },
+    status: {
+        type: String,
+        required: false,
+        enum: {
+            values: ["Active", "Inactive"],
+            message: '{VALUE} is not supported as a user status'
+        },
+        default: "Active"
+    }
 }) 
 
 userSchema.pre('save', async function() {
     if (!this.isModified('password')) return;
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
+
+    if (!this.userType === 'DJ') {
+	this.status = 'Active';
+    }
 });
 
 userSchema.methods.createJWT = function() {

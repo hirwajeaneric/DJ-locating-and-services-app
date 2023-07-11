@@ -14,7 +14,7 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: [true, "Job type must be provided"], 
         enum: {
-            values: ["Event Management","MC","Birth Day party sound system","Wedding sound system","Private party sound system","Meeting sound system","Other"],
+            values: ["Event Management","MC","Birth Day party sound system","Wedding sound system","Private party sound system","Public meeting sound system","Private meeting sound system","Concert","Club"],
             message: '{VALUE} is not supported as a job type.'
         }
     },
