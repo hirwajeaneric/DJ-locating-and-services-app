@@ -21,6 +21,16 @@ const findById = async(req, res) => {
     res.status(StatusCodes.OK).json({ job });
 };
 
+const findBySuggestedDjId = async(req, res) => {
+    const suggestedDjId = req.query.suggestedDjId;
+    const foundJobs = await JobModel.find({suggestedDjId : suggestedDjId});
+    const jobs = foundJobs.filter(job => job.status === 'Confirmed');
+    if (!jobs) {
+        throw new BadRequestError(`Job not found!`);
+    }
+    res.status(StatusCodes.OK).json({ jobs });
+};
+
 const remove = async(req, res) => {
     const jobId = req.query.id;
     const deletedJob = await JobModel.findByIdAndRemove({ _id: jobId});
@@ -42,4 +52,4 @@ const edit = async(req, res) => {
     res.status(StatusCodes.OK).json({ message: 'Job updated', updatedJob })
 };
 
-module.exports = { add, getAll, edit, findById, remove };
+module.exports = { add, getAll, edit, findById, findBySuggestedDjId, remove };

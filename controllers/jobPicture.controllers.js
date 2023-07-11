@@ -22,11 +22,16 @@ const upload = multer({
 });
 
 const attachFile = async (req, res, next) => {
-    req.body.picture = req.file.filename;
-    next();
+    if (req.file) {
+        req.body.picture = req.file.filename;
+        next();
+    } else {
+        next();
+    }
 }
 
 const add = async (req, res) => {
+    console.log(req.body);
     const  JobPicture = await JobPictureModel.create(req.body);
     res.status(StatusCodes.CREATED).json({ message: 'Picture added', JobPicture })
 };
@@ -42,7 +47,7 @@ const findById = async(req, res) => {
     if(!JobPicture){
         throw new BadRequestError(`JobPicture not found!`)
     }
-    res.status(StatusCodes.OK).json({ JobPicture })
+    res.status(StatusCodes.OK).json({ picture: JobPicture })
 };
 
 const findByJobId = async(req, res) => {

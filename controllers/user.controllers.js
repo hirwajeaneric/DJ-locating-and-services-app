@@ -156,20 +156,20 @@ const updateUser = async(req, res, next) => {
 
     const token = user.createJWT();
     res.status(StatusCodes.OK).json({
-        message: "Account successfully updated!",
+        message: "Account updated!",
         user: {
-            id: user._id,
-            email: user.email,
-            fullName: user.fullName,
-            alias: user.alias,
-            phone: user.phone,
-            userType: user.userType,
-            companyName: user.companyName,
-            specialities: user.specialities,
-            jobHistory: user.jobHistory,
-            profilePicture: user.profilePicture,
-            ratings: user.ratings,
-            description: user.description,
+            id: updatedUser._id,
+            email: updatedUser.email,
+            fullName: updatedUser.fullName,
+            alias: updatedUser.alias,
+            phone: updatedUser.phone,
+            userType: updatedUser.userType,
+            companyName: updatedUser.companyName,
+            specialities: updatedUser.specialities,
+            jobHistory: updatedUser.jobHistory,
+            profilePicture: updatedUser.profilePicture,
+            ratings: updatedUser.ratings,
+            description: updatedUser.description,
             token: token,
         }
     })
