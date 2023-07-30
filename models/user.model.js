@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false, 
         enum: {
-            values: ["Personal","Company","DJ","Manager","Admin"],
+            values: ["Personal","Company","DJ","Manager"],
             message: '{VALUE} is not supported as a user type.'
         }
     },
