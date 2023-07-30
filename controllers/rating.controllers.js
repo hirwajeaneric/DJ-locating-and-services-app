@@ -23,7 +23,7 @@ const findById = async(req, res) => {
 
 const findByDjId = async(req, res) => {
     const foundRatings = await RatingModel.find({djId : req.query.djId });
-    if (!ratings) {
+    if (!foundRatings) {
         throw new BadRequestError(`Rating not found!`);
     }
     res.status(StatusCodes.OK).json({ ratings: foundRatings });

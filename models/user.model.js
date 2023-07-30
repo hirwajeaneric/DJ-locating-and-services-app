@@ -74,6 +74,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: 0, 
     },
+    startingPrice: { 
+        type: Number, 
+        required: true,
+        default: 0, 
+    },
     status: {
         type: String,
         required: false,
