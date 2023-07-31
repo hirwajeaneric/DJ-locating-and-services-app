@@ -164,6 +164,7 @@ const updateUser = async(req, res, next) => {
             alias: updatedUser.alias,
             phone: updatedUser.phone,
             userType: updatedUser.userType,
+            status: updatedUser.status,
             companyName: updatedUser.companyName,
             specialities: updatedUser.specialities,
             jobHistory: updatedUser.jobHistory,
@@ -176,17 +177,27 @@ const updateUser = async(req, res, next) => {
 };
 
 const requestPasswordReset = async(req, res, next) => {
-    const { email } = req.body;
-    if (!email) {throw new BadRequestError('Your email is required')} 
-    
-    const registeredUser = await User.findOne({ email: email });
+    if (!req.body.email) {throw new BadRequestError('Your email is required')} 
+    var email = req.body.email;
+    var userType = '';
+    if (req.body.userType) {
+        userType = req.body.userType;
+    }
+
+    const registeredUser = await User.findOne({ email: req.body.email });
     if (!registeredUser) { throw new BadRequestError('Email address unrecognized');}
   
     let token = jwt.sign({ email: email }, process.env.JWT_SECRET, { expiresIn: 1800 }); 
     
     let clientDomain = 'localhost';
 
-    let link = `http://${clientDomain || localhost}:5555/reset-password/${token}/${registeredUser._id}`;
+    let link = '';
+
+    if (userType === 'Manager') {
+        link = `http://${clientDomain || localhost}:3000/admin/auth/reset-password/${token}/${registeredUser._id}`;
+    } else {
+        link = `http://${clientDomain || localhost}:3000/reset-password/${token}/${registeredUser._id}`;
+    }
 
     await sendEmail(
         registeredUser.email,
@@ -200,6 +211,8 @@ const requestPasswordReset = async(req, res, next) => {
 const resetPassword = async(req, res, next) => {
     const password = req.body.password;
     
+    console.log(password);   
+
     const user = await User.findById(req.query.id);
     if (!user) { throw new BadRequestError('Invalid or expired link')}
     
